@@ -1,0 +1,1 @@
+select * from seasons where user_id = $1 and "default" = true;
