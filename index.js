@@ -6,6 +6,8 @@ const massive = require("massive");
 
 const sessionCtrl = require("./controllers/sessionController");
 const seasonCtrl = require("./controllers/seasonController");
+const gameCtrl = require("./controllers/gameController");
+const goalCtrl = require("./controllers/goalController");
 
 const app = express();
 
@@ -26,6 +28,13 @@ app.post("/api/user/register", sessionCtrl.registerUser);
 //Season Calls
 app.post("/api/user/season", seasonCtrl.insertSeason);
 app.put("/api/user/seson/:id", seasonCtrl.setDefaultSeason);
+
+//Game Calls
+app.post("/api/user/game", gameCtrl.insertGame);
+app.get("/api/user/season/games", gameCtrl.getGamesBySeason);
+
+//Goal Calls
+app.post("/api/user/season/goals", goalCtrl.insertGoals);
 
 massive({
 	connectionString: CONNECTION_STRING,
