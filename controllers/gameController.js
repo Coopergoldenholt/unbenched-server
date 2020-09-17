@@ -27,9 +27,11 @@ module.exports = {
 			date,
 			req.session.user.defaultSeason.id,
 		]);
+		console.log(req.session.user.defaultSeason);
 
-		const [fullGame] = await db.game.insert_player_stats([
+		await db.game.insert_player_stats([
 			game.id,
+			req.session.user.defaultSeason.id,
 			req.session.user.id,
 			fieldGoalsAtt,
 			fieldGoalsMade,
@@ -45,8 +47,11 @@ module.exports = {
 			turnover,
 			foul,
 		]);
+		const games = await db.game.get_game_by_season(
+			req.session.user.defaultSeason.id
+		);
 
-		res.status(200).send("Game Created");
+		res.status(200).send(games);
 	},
 	getGamesBySeason: async (req, res) => {
 		const db = req.app.get("db");
@@ -54,6 +59,7 @@ module.exports = {
 		const games = await db.game.get_game_by_season(
 			req.session.user.defaultSeason.id
 		);
+
 		res.status(200).send(games);
 	},
 };

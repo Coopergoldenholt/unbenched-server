@@ -28,6 +28,7 @@ app.post("/api/user/register", sessionCtrl.registerUser);
 //Season Calls
 app.post("/api/user/season", seasonCtrl.insertSeason);
 app.put("/api/user/seson/:id", seasonCtrl.setDefaultSeason);
+app.get("/api/user/season/averages", seasonCtrl.getSeasonAverages);
 
 //Game Calls
 app.post("/api/user/game", gameCtrl.insertGame);

@@ -27,6 +27,7 @@ CREATE TABLE "games" (
 
 CREATE TABLE "player_stats" (
   "id" SERIAL PRIMARY KEY,
+  "season_id" int,
   "game_id" int,
   "user_id" int,
   "layup_shot" int,
@@ -85,6 +86,8 @@ ALTER TABLE "games" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
 ALTER TABLE "games" ADD FOREIGN KEY ("season_id") REFERENCES "seasons" ("id");
 
 ALTER TABLE "player_stats" ADD FOREIGN KEY ("game_id") REFERENCES "games" ("id");
+
+ALTER TABLE "player_stats" ADD FOREIGN KEY ("season_id") REFERENCES "seasons" ("id");
 
 ALTER TABLE "player_stats" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
 
