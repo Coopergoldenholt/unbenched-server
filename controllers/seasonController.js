@@ -50,6 +50,10 @@ module.exports = {
 		let fgaAvg =
 			Math.round((games.field_goals_attempted / games.number_of_games) * 100) /
 			100;
+		let threeAAvg =
+			Math.round((games.three_shot / games.number_of_games) * 100) / 100;
+		let threeMAvg =
+			Math.round((games.three_made / games.number_of_games) * 100) / 100;
 		let ftmAvg =
 			Math.round((games.free_throw_made / games.number_of_games) * 100) / 100;
 		let ftaAvg =
@@ -67,6 +71,7 @@ module.exports = {
 		let pfAvg = Math.round((games.foul / games.number_of_games) * 100) / 100;
 
 		let averages = {
+			ptsAvg,
 			fgAvg,
 			fgaAvg,
 			ftmAvg,
@@ -78,7 +83,8 @@ module.exports = {
 			blockAvg,
 			tovAvg,
 			pfAvg,
-			ptsAvg,
+			threeAAvg,
+			threeMAvg,
 		};
 
 		res.status(200).send(averages);
