@@ -36,6 +36,7 @@ app.get("/api/user/season/games", gameCtrl.getGamesBySeason);
 
 //Goal Calls
 app.post("/api/user/season/goals", goalCtrl.insertGoals);
+app.get("/api/user/season/goals/:seasonId", goalCtrl.getGoals);
 
 massive({
 	connectionString: CONNECTION_STRING,

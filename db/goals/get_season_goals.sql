@@ -1,0 +1,1 @@
+select * from player_goals where season_id = $1 and user_id = $2;

@@ -36,4 +36,14 @@ module.exports = {
 		]);
 		res.status(200).send(goals);
 	},
+	getGoals: async (req, res) => {
+		const db = req.app.get("db");
+		const { seasonId } = req.params;
+
+		const [goals] = await db.goals.get_season_goals([
+			seasonId,
+			req.session.user.id,
+		]);
+		res.status(200).send(goals);
+	},
 };

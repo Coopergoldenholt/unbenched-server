@@ -54,7 +54,7 @@ CREATE TABLE "player_stats" (
 
 CREATE TABLE "player_goals" (
   "id" SERIAL PRIMARY KEY,
-  "season_id" int,
+  "season_id" int UNIQUE,
   "user_id" int,
   "layup_shot" int,
   "layup_made" int,
