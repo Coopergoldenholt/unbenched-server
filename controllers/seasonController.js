@@ -41,7 +41,6 @@ module.exports = {
 		const [games] = await db.season.get_average_stats(
 			req.session.user.defaultSeason.id
 		);
-		console.log(games);
 
 		let ptsAvg = Math.round(games.points * 100) / 100;
 

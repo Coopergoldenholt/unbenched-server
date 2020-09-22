@@ -40,10 +40,35 @@ module.exports = {
 		const db = req.app.get("db");
 		const { seasonId } = req.params;
 
-		const [goals] = await db.goals.get_season_goals([
+		const [goalsUnset] = await db.goals.get_season_goals([
 			seasonId,
 			req.session.user.id,
 		]);
+		// console.log(goalsUnset);
+
+		const twoPointsMade = goalsUnset.field_goals_made - goalsUnset.three_made;
+
+		const points =
+			goalsUnset.three_made * 3 +
+			twoPointsMade * 2 +
+			goalsUnset.free_throw_made;
+
+		const goals = {
+			ptsAvg: points,
+			fgAvg: goalsUnset.field_goals_made,
+			fgaAvg: goalsUnset.field_goals_attempted,
+			ftmAvg: goalsUnset.free_throw_made,
+			ftaAvg: goalsUnset.free_throw_shot,
+			orbAvg: goalsUnset.offensive_rebound,
+			drbAvg: goalsUnset.defensive_rebound,
+			astAvg: goalsUnset.assist,
+			stlAvg: goalsUnset.steal,
+			blockAvg: goalsUnset.block,
+			tovAvg: goalsUnset.turnover,
+			pfAvg: goalsUnset.foul,
+			threeAAvg: goalsUnset.three_shot,
+			threeMAvg: goalsUnset.three_made,
+		};
 		res.status(200).send(goals);
 	},
 };
