@@ -78,6 +78,14 @@ CREATE TABLE "player_goals" (
   "foul" int
 );
 
+CREATE TABLE "videos" (
+  "id" SERIAL PRIMARY KEY,
+  "name" varchar(40),
+  "type" varchar(40),
+  "time" timestamp,
+  "url" int
+);
+
 
 ALTER TABLE "seasons" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
 
