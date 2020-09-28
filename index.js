@@ -8,6 +8,7 @@ const sessionCtrl = require("./controllers/sessionController");
 const seasonCtrl = require("./controllers/seasonController");
 const gameCtrl = require("./controllers/gameController");
 const goalCtrl = require("./controllers/goalController");
+const workoutCtrl = require("./controllers/workoutController");
 
 const app = express();
 
@@ -37,6 +38,9 @@ app.get("/api/user/season/games", gameCtrl.getGamesBySeason);
 //Goal Calls
 app.post("/api/user/season/goals", goalCtrl.insertGoals);
 app.get("/api/user/season/goals/:seasonId", goalCtrl.getGoals);
+
+//Workout Calls
+app.get("/api/workout/stats", workoutCtrl.generateWorkoutWithStats);
 
 massive({
 	connectionString: CONNECTION_STRING,

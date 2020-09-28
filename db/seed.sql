@@ -82,8 +82,8 @@ CREATE TABLE "videos" (
   "id" SERIAL PRIMARY KEY,
   "name" varchar(40),
   "type" varchar(40),
-  "time" timestamp,
-  "url" int
+  "time" int,
+  "url" text
 );
 
 
