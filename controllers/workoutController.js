@@ -131,4 +131,73 @@ module.exports = {
 			Math.random() * (shootingVideos.length - 0)
 		);
 	},
+	generateBasketballWorkout: async (req, res) => {
+		const db = req.app.get("db");
+		let { workoutItems } = req.query;
+		let time = 60;
+
+		let officailWorkout;
+		let workout = await workoutItems.split(",");
+		workout = await [...workout, "warmup"];
+		const checkArrayForLength = async () => {
+			if (workout.length < 6) {
+				workout.push(null);
+				checkArrayForLength();
+			} else {
+				// console.log(workout);
+				let workoutVideos = await db.videos.get_videos_by_type(workout);
+
+				// console.log(workoutVideos);
+				const randomizeWorkout = async () => {
+					for (var i = workoutVideos.length - 1; i > 0; i--) {
+						var j = Math.floor(Math.random() * (i + 1));
+						var temp = workoutVideos[i];
+						workoutVideos[i] = workoutVideos[j];
+						workoutVideos[j] = temp;
+					}
+
+					const reducedWorkout = await workoutVideos.reduce(
+						(acc, ele, inx, arr) => {
+							if (inx === arr.length - 1 && acc < time) {
+								randomizeWorkout();
+							}
+							if (acc > time) {
+								randomizeWorkout();
+							} else if (acc < time) {
+								console.log("adding");
+								return (acc += ele.time);
+							}
+							if (acc === time) {
+								console.log(inx);
+								// console.log(workoutVideos.slice(0, inx));
+								workoutVideos.splice(inx, workoutVideos.length);
+								officailWorkout = workoutVideos;
+								return "done";
+							}
+						},
+						0
+					);
+					return "done";
+				};
+
+				randomizeWorkout();
+				let officialWorkoutIncludesEverything = async () => {
+					let truthArray = officailWorkout.map((ele) => {
+						let check = workout.includes(ele.type);
+						console.log(check);
+					});
+					let truthAnswer = truthArray.includes(false);
+					if (!truthAnswer) {
+						return randomizeWorkout();
+					}
+				};
+				officialWorkoutIncludesEverything();
+
+				console.log(officailWorkout);
+
+				// console.log(workoutVideos);
+			}
+		};
+		checkArrayForLength();
+	},
 };

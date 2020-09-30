@@ -41,6 +41,7 @@ app.get("/api/user/season/goals/:seasonId", goalCtrl.getGoals);
 
 //Workout Calls
 app.get("/api/workout/stats", workoutCtrl.generateWorkoutWithStats);
+app.get("/api/workout/custom", workoutCtrl.generateBasketballWorkout);
 
 massive({
 	connectionString: CONNECTION_STRING,

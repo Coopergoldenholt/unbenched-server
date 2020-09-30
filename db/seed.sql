@@ -80,6 +80,7 @@ CREATE TABLE "player_goals" (
 
 CREATE TABLE "videos" (
   "id" SERIAL PRIMARY KEY,
+  "sport" varchar(40)
   "name" varchar(40),
   "type" varchar(40),
   "time" int,
