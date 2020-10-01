@@ -138,74 +138,85 @@ module.exports = {
 
 		let officailWorkout;
 		let workout = await workoutItems.split(",");
-		workout = await [...workout, "warmup"];
+		workout = [...workout, "warmup"];
+
+		const checkIfEverythingIsIncluded = async () => {
+			let warmUpCheck = await officailWorkout.map((ele) => {
+				if (ele.type === "warmup") {
+					return true;
+				} else {
+					return false;
+				}
+			});
+			let warmUpIncludesTruth = warmUpCheck.includes(true);
+			console.log(warmUpCheck);
+			// let truthAnswer = truthArray.includes(false);
+			if (warmUpIncludesTruth) {
+				console.log(officailWorkout);
+				await res.status(200).send(officailWorkout);
+			} else {
+				console.log("truth or warmup false");
+				checkArrayForLength();
+			}
+		};
 
 		const checkArrayForLength = async () => {
 			if (workout.length < 6) {
 				workout.push(null);
-				checkArrayForLength();
+				return checkArrayForLength();
 			} else {
-				// console.log(workout);
 				let workoutVideos = await db.videos.get_videos_by_type(workout);
+				// console.log("workout", workoutVideos);
 
-				// console.log(workoutVideos);
-				const randomizeWorkout = () => {
-					for (var i = workoutVideos.length - 1; i > 0; i--) {
-						var j = Math.floor(Math.random() * (i + 1));
-						var temp = workoutVideos[i];
-						workoutVideos[i] = workoutVideos[j];
-						workoutVideos[j] = temp;
-					}
+				for (var i = workoutVideos.length - 1; i > 0; i--) {
+					var j = Math.floor(Math.random() * (i + 1));
+					var temp = workoutVideos[i];
+					workoutVideos[i] = workoutVideos[j];
+					workoutVideos[j] = temp;
+				}
 
-					return reduceWorkout();
-				};
-				let officialWorkoutIncludesEverything = async () => {
-					let truthArray = officailWorkout.map((ele) => {
-						let check = workout.includes(ele.type);
-						console.log(check);
-					});
-					let warmUpCheck = workout.includes("warmup");
-
-					let truthAnswer = truthArray.includes(false);
-					if (!truthAnswer || !warmUpCheck) {
-						return randomizeWorkout();
+				let stuff = await workoutVideos.reduce((acc, ele, inx, arr) => {
+					// console.log(workoutVideos);
+					if (inx === arr.length - 1 && acc < time) {
+						return (acc = 100000);
+					} else if (acc > time) {
+						return (acc = 100000);
+					} else if (acc < time) {
+						// console.log("adding");
+						return (acc += ele.time);
+					} else if (acc === time) {
+						let videos = workoutVideos;
+						console.log("hello");
+						videos.splice(inx, workoutVideos.length);
+						officailWorkout = videos;
+						console.log(officailWorkout);
+						return acc;
 					} else {
-						res.status(200).send(officailWorkout);
+						return (acc = 100000);
 					}
-				};
-				const reduceWorkout = () => {
-					let stuff = workoutVideos.reduce((acc, ele, inx, arr) => {
-						if (inx === arr.length - 1 && acc < time) {
-							return randomizeWorkout();
-						} else if (acc > time) {
-							return randomizeWorkout();
-						} else if (acc < time) {
-							// console.log("adding");
-							return (acc += ele.time);
-						} else if (acc === time) {
-							let videos = workoutVideos;
-							videos.splice(inx, workoutVideos.length);
-							officailWorkout = videos;
-							console.log(officailWorkout);
-							officialWorkoutIncludesEverything().then((res) =>
-								console.log("hello")
-							);
-						} else {
-							return randomizeWorkout();
-						}
-					}, 0);
-				};
+				}, 0);
 
-				randomizeWorkout();
+				console.log(stuff);
 
 				// officialWorkoutIncludesEverything();
+				console.log("done");
+				if (stuff === 60) {
+					return checkIfEverythingIsIncluded();
+				} else {
+					return checkArrayForLength();
+				}
 
-				return "done";
 				// console.log(workoutVideos);
 			}
 		};
 
-		checkArrayForLength();
+		await checkArrayForLength();
+
+		// let truthArray =
+		// 	let check = workout.includes(ele.type);
+		// 	return check;
+		// });
+
 		// res.status(200).send(officailWorkout);
 	},
 };
