@@ -153,7 +153,7 @@ module.exports = {
 			// let truthAnswer = truthArray.includes(false);
 			if (warmUpIncludesTruth) {
 				console.log(officailWorkout);
-				await res.status(200).send(officailWorkout);
+				return res.status(200).send(officailWorkout);
 			} else {
 				console.log("truth or warmup false");
 				checkArrayForLength();
