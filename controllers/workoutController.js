@@ -134,10 +134,12 @@ module.exports = {
 	generateBasketballWorkout: async (req, res) => {
 		const db = req.app.get("db");
 		let { workoutItems, time } = req.query;
-		// let time = 60;
+
+		time = parseInt(time);
+
 		console.log(time, workoutItems);
 		let timesRun = 0;
-		let officailWorkout;
+		let officailWorkout = [];
 		let workout = await workoutItems.split(",");
 		workout = [...workout, "warmup"];
 
@@ -171,7 +173,7 @@ module.exports = {
 				return res.status(200).send("Workout Not Possible");
 			} else {
 				let workoutVideos = await db.videos.get_videos_by_type(workout);
-				console.log("workout", workoutVideos);
+				// console.log("workout", workoutVideos);
 
 				for (var i = workoutVideos.length - 1; i > 0; i--) {
 					var j = Math.floor(Math.random() * (i + 1));
@@ -182,19 +184,27 @@ module.exports = {
 
 				let stuff = await workoutVideos.reduce((acc, ele, inx, arr) => {
 					// console.log(workoutVideos);
-					if (inx === arr.length - 1 && acc < time) {
-						return (acc = 100000);
-					} else if (acc > time) {
+					// console.log(acc);
+					if (inx === arr.length - 1) {
+						if (acc + ele.time === time) {
+							officailWorkout = workoutVideos;
+							return (acc = 500);
+						} else {
+							return (acc = 100000);
+						}
+					}
+					if (acc > time) {
+						console.log("else if 1000");
 						return (acc = 100000);
 					} else if (acc < time) {
-						// console.log("adding");
-						return (acc += ele.time);
+						// console.log(ele.time);
+						return acc + ele.time;
 					} else if (acc === time) {
 						let videos = workoutVideos;
-						// console.log("hello");
+						console.log("hello");
 						videos.splice(inx, workoutVideos.length);
 						officailWorkout = videos;
-						// console.log(officailWorkout);
+						console.log(officailWorkout);
 						return acc;
 					} else {
 						return (acc = 100000);
@@ -205,7 +215,7 @@ module.exports = {
 
 				// officialWorkoutIncludesEverything();
 				// console.log("done");
-				if (stuff === 60) {
+				if (stuff === time || stuff === 500) {
 					return checkIfEverythingIsIncluded();
 				} else {
 					return checkArrayForLength();
