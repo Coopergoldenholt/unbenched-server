@@ -133,9 +133,10 @@ module.exports = {
 	},
 	generateBasketballWorkout: async (req, res) => {
 		const db = req.app.get("db");
-		let { workoutItems } = req.query;
-		let time = 60;
-
+		let { workoutItems, time } = req.query;
+		// let time = 60;
+		console.log(time, workoutItems);
+		let timesRun = 0;
 		let officailWorkout;
 		let workout = await workoutItems.split(",");
 		workout = [...workout, "warmup"];
@@ -161,12 +162,16 @@ module.exports = {
 		};
 
 		const checkArrayForLength = async () => {
+			timesRun += 1;
 			if (workout.length < 6) {
 				workout.push(null);
 				return checkArrayForLength();
+			} else if (timesRun > 100) {
+				console.log("here");
+				return res.status(200).send("Workout Not Possible");
 			} else {
 				let workoutVideos = await db.videos.get_videos_by_type(workout);
-				// console.log("workout", workoutVideos);
+				console.log("workout", workoutVideos);
 
 				for (var i = workoutVideos.length - 1; i > 0; i--) {
 					var j = Math.floor(Math.random() * (i + 1));
@@ -186,20 +191,20 @@ module.exports = {
 						return (acc += ele.time);
 					} else if (acc === time) {
 						let videos = workoutVideos;
-						console.log("hello");
+						// console.log("hello");
 						videos.splice(inx, workoutVideos.length);
 						officailWorkout = videos;
-						console.log(officailWorkout);
+						// console.log(officailWorkout);
 						return acc;
 					} else {
 						return (acc = 100000);
 					}
 				}, 0);
 
-				console.log(stuff);
+				// console.log(stuff);
 
 				// officialWorkoutIncludesEverything();
-				console.log("done");
+				// console.log("done");
 				if (stuff === 60) {
 					return checkIfEverythingIsIncluded();
 				} else {
