@@ -78,13 +78,23 @@ CREATE TABLE "player_goals" (
   "foul" int
 );
 
-CREATE TABLE "videos" (
+CREATE TABLE "workouts" (
   "id" SERIAL PRIMARY KEY,
-  "sport" varchar(40)
+  "sport" varchar(40),
   "name" varchar(40),
   "type" varchar(40),
   "time" int,
+  "equipment_needed" int,
   "url" text
+);
+
+CREATE TABLE "workout_results" (
+  "id" SERIAL PRIMARY KEY,
+  "user_id" int,
+  "workout_id" int,
+  "low_value" varchar(50),
+  "high_value" varchar(50),
+  "date" timestamp  
 );
 
 
@@ -103,3 +113,7 @@ ALTER TABLE "player_stats" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id")
 ALTER TABLE "player_goals" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
 
 ALTER TABLE "player_goals" ADD FOREIGN KEY ("season_id") REFERENCES "seasons" ("id");
+
+ALTER TABLE "workout_results" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
+
+ALTER TABLE "workout_results" ADD FOREIGN KEY ("workout_id") REFERENCES "workouts" ("id");

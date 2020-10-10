@@ -1,1 +1,1 @@
-select * from videos;
+select * from workouts;
