@@ -234,4 +234,12 @@ module.exports = {
 
 		// res.status(200).send(officailWorkout);
 	},
+	getWorkoutResults: async (req, res) => {
+		const db = req.app.get("db");
+		const { workoutId } = req.params;
+
+		const [results] = await db.videos.get_workout_stats([1, workoutId]);
+		console.log(results);
+		res.status(200).send(results);
+	},
 };
