@@ -9,6 +9,8 @@ const seasonCtrl = require("./controllers/seasonController");
 const gameCtrl = require("./controllers/gameController");
 const goalCtrl = require("./controllers/goalController");
 const workoutCtrl = require("./controllers/workoutController");
+const drillCtrl = require("./controllers/drillsController");
+const drillsController = require("./controllers/drillsController");
 
 const app = express();
 
@@ -43,6 +45,9 @@ app.get("/api/user/season/goals/:seasonId", goalCtrl.getGoals);
 app.get("/api/workout/stats", workoutCtrl.generateWorkoutWithStats);
 app.get("/api/workout/custom", workoutCtrl.generateBasketballWorkout);
 app.get("/api/workout/results/:workoutId", workoutCtrl.getWorkoutResults);
+
+//Drill Calls
+app.get("/api/drills", drillsController.getAllDrill);
 
 massive({
 	connectionString: CONNECTION_STRING,

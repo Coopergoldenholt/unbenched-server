@@ -238,8 +238,8 @@ module.exports = {
 		const db = req.app.get("db");
 		const { workoutId } = req.params;
 
-		const [results] = await db.videos.get_workout_stats([1, workoutId]);
-		console.log(results);
+		const results = await db.videos.get_workout_stats([1, workoutId]);
+
 		res.status(200).send(results);
 	},
 };
