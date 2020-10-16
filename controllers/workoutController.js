@@ -239,7 +239,24 @@ module.exports = {
 		const { workoutId } = req.params;
 
 		const results = await db.videos.get_workout_stats([1, workoutId]);
-
+		console.log(results);
 		res.status(200).send(results);
+	},
+	insertWorkoutResult: async (req, res) => {
+		const db = req.app.get("db");
+		const { workoutId, lowValue, highValue } = req.body;
+
+		const date = `${new Date().getFullYear()}-${
+			new Date().getMonth() + 1
+		}-${new Date().getDate()} ${new Date().getHours()}:${new Date().getMinutes()}`;
+
+		const results = await db.videos.insert_workout_result([
+			req.session.user.id,
+			workoutId,
+			lowValue,
+			highValue,
+		]);
+
+		res.status(200).send("good job");
 	},
 };
