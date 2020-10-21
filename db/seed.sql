@@ -85,7 +85,8 @@ CREATE TABLE "workouts" (
   "type" varchar(40),
   "time" int,
   "equipment_needed" int,
-  "url" text
+  "url" text,
+  "workout_data" boolean
 );
 
 CREATE TABLE "workout_results" (

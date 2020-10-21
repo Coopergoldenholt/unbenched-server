@@ -255,8 +255,9 @@ module.exports = {
 			workoutId,
 			lowValue,
 			highValue,
+			date,
 		]);
-
+		console.log("hello");
 		res.status(200).send("good job");
 	},
 };
