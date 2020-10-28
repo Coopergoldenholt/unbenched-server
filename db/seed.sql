@@ -4,9 +4,9 @@ CREATE TABLE "users" (
   "last_name" varchar(40),
   "email" varchar(100) UNIQUE,
   "password" text,
-  "customer_id" varchar(100),
-  "type_of_user" varchar(50),
-  "profile_pic" varchar(1000)
+  "athlete_gym_default" varchar(50),
+  "profile_pic" text(1000),
+  "birth_day" timestamp
 );
 
 CREATE TABLE "seasons" (
@@ -86,7 +86,10 @@ CREATE TABLE "workouts" (
   "time" int,
   "equipment_needed" int,
   "url" text,
-  "workout_data" boolean
+  "workout_data" boolean,
+  "low_value_name" varchar(50),
+  "high_value_name" varchar(50),
+  "age_restriction" int
 );
 
 CREATE TABLE "workout_results" (
