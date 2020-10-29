@@ -1,82 +1,14 @@
 CREATE TABLE "users" (
-"id" SERIAL PRIMARY KEY,
+  "id" SERIAL PRIMARY KEY,
   "first_name" varchar(40),
   "last_name" varchar(40),
   "email" varchar(100) UNIQUE,
   "password" text,
   "athlete_gym_default" varchar(50),
-  "profile_pic" text(1000),
+  "profile_pic" text,
   "birth_day" timestamp
 );
 
-CREATE TABLE "seasons" (
-  "id" SERIAL PRIMARY KEY,
-  "season" varchar(6),
-  "user_id" int,
-  "default" boolean
-);
-
-CREATE TABLE "games" (
-  "id" SERIAL PRIMARY KEY,
-  "opponent" varchar(40),
-  "user_id" int,
-  "date" timestamp,
-  "season_id" int
-);
-
-
-CREATE TABLE "player_stats" (
-  "id" SERIAL PRIMARY KEY,
-  "season_id" int,
-  "game_id" int,
-  "user_id" int,
-  "layup_shot" int,
-  "layup_made" int,
-  "close_range_shot" int,
-  "close_range_made" int,
-  "free_throw_shot" int,
-  "free_throw_made" int,
-  "mid_range_shot" int,
-  "mid_range_made" int,
-  "three_shot" int,
-  "three_made" int,
-  "offensive_rebound" int,
-  "defensive_rebound" int,
-  "steal" int,
-  "assist" int,
-  "block" int,
-  "turnover" int,
-  "field_goals_attempted" int,
-  "field_goals_made" int,
-  "minutes_played" int,
-  "foul" int
-);
-
-CREATE TABLE "player_goals" (
-  "id" SERIAL PRIMARY KEY,
-  "season_id" int UNIQUE,
-  "user_id" int,
-  "layup_shot" int,
-  "layup_made" int,
-  "close_range_shot" int,
-  "close_range_made" int,
-  "free_throw_shot" int,
-  "free_throw_made" int,
-  "mid_range_shot" int,
-  "mid_range_made" int,
-  "three_shot" int,
-  "three_made" int,
-  "offensive_rebound" int,
-  "defensive_rebound" int,
-  "steal" int,
-  "assist" int,
-  "block" int,
-  "turnover" int,
-  "field_goals_attempted" int,
-  "field_goals_made" int,
-  "minutes_played" int,
-  "foul" int
-);
 
 CREATE TABLE "workouts" (
   "id" SERIAL PRIMARY KEY,
@@ -89,7 +21,8 @@ CREATE TABLE "workouts" (
   "workout_data" boolean,
   "low_value_name" varchar(50),
   "high_value_name" varchar(50),
-  "age_restriction" int
+  "age_restriction" int,
+  "percentages" boolean
 );
 
 CREATE TABLE "workout_results" (
@@ -102,22 +35,9 @@ CREATE TABLE "workout_results" (
 );
 
 
-ALTER TABLE "seasons" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
-
-ALTER TABLE "games" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
-
-ALTER TABLE "games" ADD FOREIGN KEY ("season_id") REFERENCES "seasons" ("id");
-
-ALTER TABLE "player_stats" ADD FOREIGN KEY ("game_id") REFERENCES "games" ("id");
-
-ALTER TABLE "player_stats" ADD FOREIGN KEY ("season_id") REFERENCES "seasons" ("id");
-
-ALTER TABLE "player_stats" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
-
-ALTER TABLE "player_goals" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
-
-ALTER TABLE "player_goals" ADD FOREIGN KEY ("season_id") REFERENCES "seasons" ("id");
-
 ALTER TABLE "workout_results" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
 
 ALTER TABLE "workout_results" ADD FOREIGN KEY ("workout_id") REFERENCES "workouts" ("id");
+
+INSERT INTO workouts (sport, name, type, time, equipment_needed, url, workout_data, low_value_name, high_value_name, age_restriction, percentages)
+VALUES ('basketball', 'Shoot Better Threes', 'three_point_shooting', 20, 2, 'https://www.youtube.com/embed/XfcI36XgeLE', null, null, null, null, true )

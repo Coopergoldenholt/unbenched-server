@@ -16,13 +16,12 @@ module.exports = {
 		const result = await bcrypt.compare(password, user.password);
 
 		if (result) {
-			let [season] = await db.season.get_default_season([user.id]);
 			req.session.user = {
 				email: user.email,
-				name: user.name,
+				firstName: user.firstName,
+				lastName: user.lastName,
+				name: `${user.firstName} ${user.lastName}`,
 				loggedIn: true,
-				defaultSeason: season,
-				user: user.type_of_user,
 				id: user.id,
 			};
 			res.status(200).send(req.session.user);
@@ -30,7 +29,8 @@ module.exports = {
 	},
 	registerUser: async (req, res) => {
 		const db = req.app.get("db");
-		const { email, password, firstName, lastName } = req.body;
+		let { email, password, firstName, lastName } = req.body;
+		email = email.toLowerCase();
 		const [existingUser] = await db.session.get_user_by_email(email);
 		if (existingUser) {
 			return res.status(400).send("Email is already in use");
