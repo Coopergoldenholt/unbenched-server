@@ -27,6 +27,7 @@ app.use(
 //Authorization Calls
 app.post("/api/user/login", sessionCtrl.loginUser);
 app.post("/api/user/register", sessionCtrl.registerUser);
+app.post("/api/user/default-season", sessionCtrl.setDefaultGym);
 
 //Season Calls
 app.post("/api/user/season", seasonCtrl.insertSeason);

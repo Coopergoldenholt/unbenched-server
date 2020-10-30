@@ -18,11 +18,14 @@ module.exports = {
 		if (result) {
 			req.session.user = {
 				email: user.email,
-				firstName: user.firstName,
-				lastName: user.lastName,
-				name: `${user.firstName} ${user.lastName}`,
+				firstName: user.first_name,
+				lastName: user.last_name,
+				name: `${user.first_name} ${user.last_name}`,
 				loggedIn: true,
 				id: user.id,
+				athleteGymDefault: user.athlete_gym_default,
+				profilePic: user.profile_pic,
+				birthDay: user.birth_day,
 			};
 			res.status(200).send(req.session.user);
 		} else res.status(401).send("Username or password incorrect");
@@ -46,10 +49,37 @@ module.exports = {
 		]);
 
 		req.session.user = {
-			name: user.full_name,
 			email: user.email,
+			firstName: user.first_name,
+			lastName: user.last_name,
+			name: `${user.first_name} ${user.last_name}`,
 			loggedIn: true,
 			id: user.id,
+			athleteGymDefault: user.athlete_gym_default,
+			profilePic: user.profile_pic,
+			birthDay: user.birth_day,
+		};
+		res.status(200).send(req.session.user);
+	},
+	setDefaultGym: async (req, res) => {
+		const db = req.app.get("db");
+		const { id } = req.body;
+
+		const [user] = await db.session.set_user_gym_default([
+			req.session.user.id,
+			id,
+		]);
+		console.log(user);
+		req.session.user = {
+			email: user.email,
+			firstName: user.first_name,
+			lastName: user.last_name,
+			name: `${user.first_name} ${user.last_name}`,
+			loggedIn: true,
+			id: user.id,
+			athleteGymDefault: user.athlete_gym_default,
+			profilePic: user.profile_pic,
+			birthDay: user.birth_day,
 		};
 		res.status(200).send(req.session.user);
 	},
