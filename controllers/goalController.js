@@ -44,7 +44,6 @@ module.exports = {
 			seasonId,
 			req.session.user.id,
 		]);
-		// console.log(goalsUnset);
 
 		const twoPointsMade = goalsUnset.field_goals_made - goalsUnset.three_made;
 

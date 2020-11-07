@@ -9,7 +9,6 @@ module.exports = {
 			req.session.user.defaultSeason.id,
 			req.session.user.id,
 		]);
-		// console.log(goalsUnset);
 
 		const twoPointsMade = goalsUnset.field_goals_made - goalsUnset.three_made;
 
@@ -137,7 +136,6 @@ module.exports = {
 
 		time = parseInt(time);
 
-		console.log(time, workoutItems);
 		let timesRun = 0;
 		let officailWorkout = [];
 		let workout = await workoutItems.split(",");
@@ -152,13 +150,11 @@ module.exports = {
 				}
 			});
 			let warmUpIncludesTruth = warmUpCheck.includes(true);
-			console.log(warmUpCheck);
+
 			// let truthAnswer = truthArray.includes(false);
 			if (warmUpIncludesTruth) {
-				console.log(officailWorkout);
 				return res.status(200).send(officailWorkout);
 			} else {
-				console.log("truth or warmup false");
 				checkArrayForLength();
 			}
 		};
@@ -169,11 +165,9 @@ module.exports = {
 				workout.push(null);
 				return checkArrayForLength();
 			} else if (timesRun > 100) {
-				console.log("here");
 				return res.status(200).send("Workout Not Possible");
 			} else {
 				let workoutVideos = await db.videos.get_videos_by_type(workout);
-				// console.log("workout", workoutVideos);
 
 				for (var i = workoutVideos.length - 1; i > 0; i--) {
 					var j = Math.floor(Math.random() * (i + 1));
@@ -183,8 +177,6 @@ module.exports = {
 				}
 
 				let stuff = await workoutVideos.reduce((acc, ele, inx, arr) => {
-					// console.log(workoutVideos);
-					// console.log(acc);
 					if (inx === arr.length - 1) {
 						if (acc + ele.time === time) {
 							officailWorkout = workoutVideos;
@@ -194,34 +186,26 @@ module.exports = {
 						}
 					}
 					if (acc > time) {
-						console.log("else if 1000");
 						return (acc = 100000);
 					} else if (acc < time) {
-						// console.log(ele.time);
 						return acc + ele.time;
 					} else if (acc === time) {
 						let videos = workoutVideos;
-						console.log("hello");
+
 						videos.splice(inx, workoutVideos.length);
 						officailWorkout = videos;
-						console.log(officailWorkout);
+
 						return acc;
 					} else {
 						return (acc = 100000);
 					}
 				}, 0);
 
-				// console.log(stuff);
-
-				// officialWorkoutIncludesEverything();
-				// console.log("done");
 				if (stuff === time || stuff === 500) {
 					return checkIfEverythingIsIncluded();
 				} else {
 					return checkArrayForLength();
 				}
-
-				// console.log(workoutVideos);
 			}
 		};
 
@@ -239,7 +223,7 @@ module.exports = {
 		const { workoutId } = req.params;
 
 		const results = await db.videos.get_workout_stats([2, workoutId]);
-		console.log(results);
+
 		res.status(200).send(results);
 	},
 	insertWorkoutResult: async (req, res) => {

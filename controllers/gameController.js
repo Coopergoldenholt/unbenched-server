@@ -27,7 +27,6 @@ module.exports = {
 			date,
 			req.session.user.defaultSeason.id,
 		]);
-		console.log(req.session.user.defaultSeason);
 
 		await db.game.insert_player_stats([
 			game.id,

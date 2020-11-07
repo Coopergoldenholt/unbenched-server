@@ -69,7 +69,7 @@ module.exports = {
 			req.session.user.id,
 			id,
 		]);
-		console.log(user);
+
 		req.session.user = {
 			email: user.email,
 			firstName: user.first_name,
@@ -82,5 +82,9 @@ module.exports = {
 			birthDay: user.birth_day,
 		};
 		res.status(200).send(req.session.user);
+	},
+	destroySession: async (req, res) => {
+		req.session.destroy();
+		res.status(200).send("logged out");
 	},
 };

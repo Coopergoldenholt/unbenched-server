@@ -28,6 +28,7 @@ app.use(
 app.post("/api/user/login", sessionCtrl.loginUser);
 app.post("/api/user/register", sessionCtrl.registerUser);
 app.post("/api/user/default-season", sessionCtrl.setDefaultGym);
+app.post("/api/user/logout", sessionCtrl.destroySession);
 
 //Season Calls
 app.post("/api/user/season", seasonCtrl.insertSeason);
