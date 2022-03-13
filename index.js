@@ -48,6 +48,7 @@ app.get("/api/workout/stats", workoutCtrl.generateWorkoutWithStats);
 app.get("/api/workout/custom", workoutCtrl.generateBasketballWorkout);
 app.get("/api/workout/results/:workoutId", workoutCtrl.getWorkoutResults);
 app.post("/api/workout/complete", workoutCtrl.insertWorkoutResult);
+app.get("/api/workout", workoutCtrl.getPreviousWorkouts);
 
 //Drill Calls
 app.get("/api/drills", drillsController.getAllDrill);

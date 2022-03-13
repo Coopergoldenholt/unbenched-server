@@ -139,84 +139,31 @@ module.exports = {
 		let timesRun = 0;
 		let officailWorkout = [];
 		let workout = await workoutItems.split(",");
-		workout = [...workout, "warmup"];
-
-		const checkIfEverythingIsIncluded = async () => {
-			let warmUpCheck = await officailWorkout.map((ele) => {
-				if (ele.type === "warmup") {
-					return true;
-				} else {
-					return false;
-				}
-			});
-			let warmUpIncludesTruth = warmUpCheck.includes(true);
-
-			// let truthAnswer = truthArray.includes(false);
-			if (warmUpIncludesTruth) {
-				return res.status(200).send(officailWorkout);
-			} else {
-				checkArrayForLength();
-			}
-		};
-
-		const checkArrayForLength = async () => {
-			timesRun += 1;
-			if (workout.length < 6) {
-				workout.push(null);
-				return checkArrayForLength();
-			} else if (timesRun > 100) {
-				return res.status(200).send("Workout Not Possible");
-			} else {
-				let workoutVideos = await db.videos.get_videos_by_type(workout);
-
-				for (var i = workoutVideos.length - 1; i > 0; i--) {
-					var j = Math.floor(Math.random() * (i + 1));
-					var temp = workoutVideos[i];
-					workoutVideos[i] = workoutVideos[j];
-					workoutVideos[j] = temp;
-				}
-
-				let stuff = await workoutVideos.reduce((acc, ele, inx, arr) => {
-					if (inx === arr.length - 1) {
-						if (acc + ele.time === time) {
-							officailWorkout = workoutVideos;
-							return (acc = 500);
-						} else {
-							return (acc = 100000);
-						}
-					}
-					if (acc > time) {
-						return (acc = 100000);
-					} else if (acc < time) {
-						return acc + ele.time;
-					} else if (acc === time) {
-						let videos = workoutVideos;
-
-						videos.splice(inx, workoutVideos.length);
-						officailWorkout = videos;
-
-						return acc;
-					} else {
-						return (acc = 100000);
-					}
-				}, 0);
-
-				if (stuff === time || stuff === 500) {
-					return checkIfEverythingIsIncluded();
-				} else {
-					return checkArrayForLength();
+		console.log(workout);
+		if (workout.length < 6)
+			for (let i = 0; i < 6; i++) {
+				if (!workout[i]) {
+					workout.push(null);
 				}
 			}
-		};
+		let workoutVideos = await db.videos.get_videos_by_type(workout);
 
-		await checkArrayForLength();
+		function createWorkout() {
+			let newWorkout = [];
+			let totalTime = 0
 
-		// let truthArray =
-		// 	let check = workout.includes(ele.type);
-		// 	return check;
-		// });
+			sortWorkout(workoutVideos, newWorkout, totalTime)
 
-		// res.status(200).send(officailWorkout);
+		
+		}
+
+		function sortWorkout(drills, workout) {
+			let newWorkout = [];
+			for (let drill of drills) {
+			}
+		}
+
+		createWorkout();
 	},
 	getWorkoutResults: async (req, res) => {
 		const db = req.app.get("db");
@@ -243,5 +190,12 @@ module.exports = {
 		]);
 
 		res.status(200).send("good job");
+	},
+	getPreviousWorkouts: async (req, res) => {
+		const db = req.app.get("db");
+
+		const results = await db.videos.get_all_previous_workouts(2);
+
+		res.status(200).send(results);
 	},
 };

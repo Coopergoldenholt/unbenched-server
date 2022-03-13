@@ -9,7 +9,6 @@ module.exports = {
 		let { email, password } = req.body;
 		email = email.toLowerCase();
 		const [user] = await db.session.get_user_by_email(email);
-
 		if (!user) {
 			return res.status(401).send("Username or password incorrect");
 		}
